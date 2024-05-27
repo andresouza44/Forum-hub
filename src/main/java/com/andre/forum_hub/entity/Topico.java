@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "tb_topico")
@@ -20,20 +19,26 @@ public class Topico {
     private Long id;
 
     private String titulo;
+
+    @Column(columnDefinition = "TEXT")
     private String mensagem;
+    
     private LocalDateTime dataCriacao;
     private Boolean status;
 
-    @ManyToOne
-    @JoinColumn(name ="curso_id")
-    private Curso curso;
+    private String curso;
+    private String autor;
 
-    @ManyToOne
-    @JoinColumn(name = "autor_id")
-    private Usuario autor;
-
-    @OneToMany (mappedBy = "topico")
-    private List<Resposta> respostas;
+//    @ManyToOne
+//    @JoinColumn(name ="curso_id")
+//    private Curso curso;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "autor_id")
+//    private Usuario autor;
+//
+//    @OneToMany (mappedBy = "topico")
+//    private List<Resposta> respostas;
 
 
 
