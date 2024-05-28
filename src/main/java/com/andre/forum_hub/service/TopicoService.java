@@ -6,8 +6,13 @@ import com.andre.forum_hub.repository.TopicoRepository;
 import com.andre.forum_hub.validacoes.ValidadorTopico;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,10 +45,10 @@ public class TopicoService {
         return new TopicoDto(topico);
 
     }
-
-    public List<TopicoDto> findAll (){
-        List<Topico> topicos = repository.findAll();
-        return topicos.stream().map(TopicoDto::new).toList();
+    @Transactional(readOnly = true)
+    public Page<TopicoDto> findAll (Pageable pageable , String curso, Integer ano){
+        Page<Topico> topicos = repository.searchByCurso(pageable, curso, ano);
+        return topicos.map(TopicoDto::new);
     }
 
 }
