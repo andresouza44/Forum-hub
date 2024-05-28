@@ -4,15 +4,11 @@ import com.andre.forum_hub.dto.TopicoDto;
 import com.andre.forum_hub.entity.Topico;
 import com.andre.forum_hub.repository.TopicoRepository;
 import com.andre.forum_hub.validacoes.ValidadorTopico;
-import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
-
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,7 +23,7 @@ public class TopicoService {
     List<ValidadorTopico> validadores;
 
     @Transactional
-    public TopicoDto cadastrar (TopicoDto dto){
+    public TopicoDto cadastrar(TopicoDto dto) {
 
         validadores.forEach(v -> v.validar(dto));
 
@@ -45,10 +41,19 @@ public class TopicoService {
         return new TopicoDto(topico);
 
     }
+
     @Transactional(readOnly = true)
-    public Page<TopicoDto> findAll (Pageable pageable , String curso, Integer ano){
-        Page<Topico> topicos = repository.searchByCurso(pageable, curso, ano);
-        return topicos.map(TopicoDto::new);
+    public Page<TopicoDto> findAll(Pageable pageable, String curso, Integer ano) {
+
+        if (ano == null) {
+            Page<Topico> topicos = repository.searchByCurso(pageable, curso);
+            return topicos.map(TopicoDto::new);
+
+        }else {
+            Page<Topico> topicos = repository.searchByCursoAndAno(pageable, curso, ano);
+            return topicos.map(TopicoDto::new);
+        }
+
     }
 
 }

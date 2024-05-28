@@ -13,9 +13,13 @@ public interface TopicoRepository extends JpaRepository<Topico, Long> {
     @Query("""
             SELECT t FROM Topico  t
             WHERE UPPER (t.curso) LIKE UPPER (CONCAT ('%',:curso,'%'))
+            """)
+    Page<Topico> searchByCurso(Pageable pageable, String curso);
+
+    @Query("""
+            SELECT t FROM Topico  t
+            WHERE UPPER (t.curso) LIKE UPPER (CONCAT ('%',:curso,'%'))
             AND YEAR(t.dataCriacao) = :ano
             """)
-
-
-    Page<Topico> searchByCurso(Pageable pageable, String curso, Integer ano);
+    Page<Topico> searchByCursoAndAno(Pageable pageable, String curso, Integer ano);
 }

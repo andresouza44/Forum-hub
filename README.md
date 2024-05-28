@@ -17,6 +17,9 @@ Challenge 3 - Desenvolvido para Formação Java do Programa ONE.
 - Mostrar um tópico específico;
 - Atualizar um tópico;
 - Eliminar um tópico.
+- Busca paginada, podendo buscar por parte do nome do curso e/ou ano
+    Ex: http://localhost:8080/topicos?ano=2020&curso=python
+
 
 
 
