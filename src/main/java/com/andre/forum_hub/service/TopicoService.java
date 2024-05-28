@@ -7,6 +7,7 @@ import com.andre.forum_hub.validacoes.ValidadorTopico;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,14 +21,8 @@ public class TopicoService {
     @Autowired
     List<ValidadorTopico> validadores;
 
+    @Transactional
     public TopicoDto cadastrar (TopicoDto dto){
-
-//        List<Topico> topicos = repository.findAll();
-//        topicos.forEach(e -> {
-//            if (e.getTitulo().equals(dto.getTitulo())) {
-//                throw new ValidationException("Título já existe");
-//            }
-//        });
 
         validadores.forEach(v -> v.validar(dto));
 
@@ -44,7 +39,11 @@ public class TopicoService {
 
         return new TopicoDto(topico);
 
-
-
     }
+
+    public List<TopicoDto> findAll (){
+        List<Topico> topicos = repository.findAll();
+        return topicos.stream().map(TopicoDto::new).toList();
+    }
+
 }

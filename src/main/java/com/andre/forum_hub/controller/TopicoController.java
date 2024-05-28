@@ -3,16 +3,15 @@ package com.andre.forum_hub.controller;
 import com.andre.forum_hub.dto.TopicoDto;
 import com.andre.forum_hub.service.TopicoService;
 import jakarta.validation.Valid;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/topicos")
@@ -30,6 +29,12 @@ public class TopicoController {
 
         return ResponseEntity.created(uri).body(dtoResult);
 
+    }
+
+    @GetMapping
+    public ResponseEntity<List<TopicoDto>> findAll(){
+        List<TopicoDto> topicos = service.findAll();
+        return ResponseEntity.ok().body(topicos);
     }
 
 }
