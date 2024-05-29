@@ -41,4 +41,11 @@ public class TopicoController {
         return ResponseEntity.ok().body(topicos);
     }
 
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<TopicoDto> findById(@PathVariable Long id){
+        TopicoDto dto = service.findById(id);
+        return ResponseEntity.ok().body(dto);
+
+    }
+
 }

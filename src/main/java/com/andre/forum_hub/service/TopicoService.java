@@ -3,8 +3,12 @@ package com.andre.forum_hub.service;
 import com.andre.forum_hub.dto.TopicoDto;
 import com.andre.forum_hub.entity.Topico;
 import com.andre.forum_hub.repository.TopicoRepository;
+import com.andre.forum_hub.service.exceptions.ResourceNotFoundException;
 import com.andre.forum_hub.validacoes.ValidadorTopico;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -12,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class TopicoService {
@@ -56,4 +62,11 @@ public class TopicoService {
 
     }
 
+    @Transactional(readOnly = true)
+    public TopicoDto findById(Long id) {
+        Topico topico = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Curso não encontrado"));
+
+        return new TopicoDto(topico);
+    }
 }
