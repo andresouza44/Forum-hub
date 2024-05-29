@@ -45,6 +45,12 @@ public class TopicoController {
     public ResponseEntity<TopicoDto> findById(@PathVariable Long id){
         TopicoDto dto = service.findById(id);
         return ResponseEntity.ok().body(dto);
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<TopicoDto> update (@RequestBody @Valid TopicoDto dto, @PathVariable  Long id){
+        dto = service.update(dto, id);
+        return ResponseEntity.ok(dto);
 
     }
 

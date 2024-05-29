@@ -13,6 +13,7 @@ import java.util.List;
 @Setter
 @Getter
 public class TopicoDto {
+
     private Long id;
 
     @NotBlank(message = "Campo título não pode estar vazio")

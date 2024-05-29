@@ -5,10 +5,8 @@ import com.andre.forum_hub.entity.Topico;
 import com.andre.forum_hub.repository.TopicoRepository;
 import com.andre.forum_hub.service.exceptions.ResourceNotFoundException;
 import com.andre.forum_hub.validacoes.ValidadorTopico;
-import org.hibernate.ObjectNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,8 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class TopicoService {
@@ -55,7 +51,7 @@ public class TopicoService {
             Page<Topico> topicos = repository.searchByCurso(pageable, curso);
             return topicos.map(TopicoDto::new);
 
-        }else {
+        } else {
             Page<Topico> topicos = repository.searchByCursoAndAno(pageable, curso, ano);
             return topicos.map(TopicoDto::new);
         }
@@ -68,5 +64,25 @@ public class TopicoService {
                 .orElseThrow(() -> new ResourceNotFoundException("Curso não encontrado"));
 
         return new TopicoDto(topico);
+    }
+
+    @Transactional
+    public TopicoDto update(TopicoDto dto, Long id) {
+        try {
+            Topico topico = repository.getReferenceById(id);
+            topico.setTitulo(dto.getTitulo());
+            topico.setMensagem(dto.getMensagem());
+            topico.setStatus(dto.getStatus());
+            topico.setAutor(dto.getAutor());
+            topico.setCurso(dto.getCurso());
+
+            repository.save(topico);
+            return new TopicoDto(topico);
+
+
+
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Curso não encontrado");
+        }
     }
 }
