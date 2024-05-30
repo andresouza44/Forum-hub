@@ -85,4 +85,12 @@ public class TopicoService {
             throw new ResourceNotFoundException("Curso não encontrado");
         }
     }
+
+    @Transactional()
+    public void deleteById(Long id){
+        if(!repository.existsById(id)){
+            throw new ResourceNotFoundException("Tópico não encontrado");
+        }
+        repository.deleteById(id);
+    }
 }

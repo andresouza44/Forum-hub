@@ -54,4 +54,10 @@ public class TopicoController {
 
     }
 
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity delete (@PathVariable Long id){
+        service.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
