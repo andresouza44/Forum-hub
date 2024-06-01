@@ -8,12 +8,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-
 import java.net.URI;
-import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping(value = "/topicos")
@@ -33,6 +32,7 @@ public class TopicoController {
 
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
     @GetMapping
     public ResponseEntity<Page<TopicoDto>> findAll(@PageableDefault(size=10,sort = "dataCriacao") Pageable pageable,
                                                    @RequestParam(name ="curso", defaultValue = "") String curso,
@@ -40,13 +40,14 @@ public class TopicoController {
         Page<TopicoDto> topicos = service.findAll(pageable, curso, ano);
         return ResponseEntity.ok().body(topicos);
     }
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
     @GetMapping(value = "/{id}")
     public ResponseEntity<TopicoDto> findById(@PathVariable Long id){
         TopicoDto dto = service.findById(id);
         return ResponseEntity.ok().body(dto);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "/{id}")
     public ResponseEntity<TopicoDto> update (@RequestBody @Valid TopicoDto dto, @PathVariable  Long id){
         dto = service.update(dto, id);
