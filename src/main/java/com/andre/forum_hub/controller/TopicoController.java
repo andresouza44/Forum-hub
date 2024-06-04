@@ -21,6 +21,7 @@ public class TopicoController {
     @Autowired
     private TopicoService service;
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<TopicoDto> create(@RequestBody @Valid TopicoDto dto) {
         TopicoDto dtoResult = service.cadastrar(dto);
