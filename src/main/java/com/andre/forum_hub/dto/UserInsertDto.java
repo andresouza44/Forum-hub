@@ -6,7 +6,6 @@ public class UserInsertDto extends UserDto {
     private UserInsertDto(){}
 
 
-
     public String getPassword() {
         return password;
     }
