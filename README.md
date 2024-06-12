@@ -9,7 +9,8 @@ Challenge 3 - Desenvolvido para Formação Java do Programa ONE.
 - Criar um fórum onde todos os participantes de uma plataforma podem colocar suas perguntas sobre determinados assuntos.
 - Validações realizadas segundo as regras de negócio;
 - Implementação de uma base de dados relacional para a persistência da informação;
-- Serviço de autenticação/autorização para restringir o acesso à informação
+- Serviço de autenticação/autorização para restringir o acesso à informação;
+- Documentação com Swagger.
 
 ### Funcionalidades do Aplicativo
 - Criar um novo tópico;
