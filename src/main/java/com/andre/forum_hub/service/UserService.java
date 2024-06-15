@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,7 +30,6 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     UserRepository repository;
-
 
     @Autowired
     TokenService tokenService;
@@ -48,8 +49,8 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-       
-        System.out.println("findby Email " + repository.findByEmail(username));
+
+        System.out.println("findby Email " + repository.findUserDetailsByEmail(username));
 
         List<UserDetailsProjection> result = repository.searchUserAndRolesByUserName(username);
         if (result.isEmpty()) {
@@ -80,7 +81,7 @@ public class UserService implements UserDetailsService {
 
     public UserDto registerNewUser(RegisterDto dto) {
 
-        if (repository.findByEmail(dto.email()) != null) {
+        if (repository.findUserDetailsByEmail(dto.email()) != null) {
             throw new UsernameNotFoundException("Usuário Não Encontrado");
         }
 
@@ -94,6 +95,25 @@ public class UserService implements UserDetailsService {
         repository.save(newUser);
 
         return new UserDto(newUser);
+    }
+
+    protected User authenticated() {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = (User) authentication.getPrincipal();
+            return user;
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @Transactional(readOnly = true)
+    public UserDto getMe() {
+        User user = authenticated();
+        return new UserDto(user);
+
     }
 
 }

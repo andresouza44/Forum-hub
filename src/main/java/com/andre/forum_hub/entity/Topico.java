@@ -40,9 +40,4 @@ public class Topico {
 //    @OneToMany (mappedBy = "topico")
 //    private List<Resposta> respostas;
 
-
-
-
-
-
 }

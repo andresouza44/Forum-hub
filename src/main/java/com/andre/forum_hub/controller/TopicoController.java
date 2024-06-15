@@ -65,5 +65,4 @@ public class TopicoController {
         service.deleteById(id);
         return ResponseEntity.noContent().build();
     }
-
 }

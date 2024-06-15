@@ -29,6 +29,7 @@ public class TokenService {
                     .withIssuer("auth-api")
                     .withSubject(user.getUsername())
                     .withExpiresAt(getExpirationDate())
+                    .withClaim("username",user.getEmail())
                     .sign(algorithm);
             return token;
         } catch (JWTCreationException exception) {
