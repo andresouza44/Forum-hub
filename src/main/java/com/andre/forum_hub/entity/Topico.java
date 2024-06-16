@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_topico")
@@ -37,7 +38,7 @@ public class Topico {
 //    @JoinColumn(name = "autor_id")
 //    private Usuario autor;
 //
-//    @OneToMany (mappedBy = "topico")
-//    private List<Resposta> respostas;
+    @OneToMany (mappedBy = "topico" ,cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Resposta> respostas;
 
 }

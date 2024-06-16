@@ -49,28 +49,19 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-
-        System.out.println("findby Email " + repository.findUserDetailsByEmail(username));
-
         List<UserDetailsProjection> result = repository.searchUserAndRolesByUserName(username);
         if (result.isEmpty()) {
             throw new UsernameNotFoundException("Usuário não encontrado");
         }
-        System.out.println("Service DTO:" + result.get(0).getUsername());
-        System.out.println("Service DTO:" + result.get(0).getPassword());
-        System.out.println("Service DTO:" + result.get(0).getAuthority());
-        System.out.println("Service DTO:" + result.get(0));
         User user = new User();
         user.setEmail(result.get(0).getUsername());
         user.setSenha(result.get(0).getPassword());
         user.getRoles().forEach(projection -> user.addRole(new Role(projection.getId(), projection.getAuthority())));
-        System.out.println("USER: " + user);
         return user;
     }
 
     @Transactional
     public LoginResponseDto login(AuthenticationDto dto) {
-        System.out.println("Service DTO login :" + dto);
 
         var usernamePassword = new UsernamePasswordAuthenticationToken(dto.email(), dto.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
@@ -106,7 +97,6 @@ public class UserService implements UserDetailsService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 
     @Transactional(readOnly = true)

@@ -62,9 +62,16 @@ public class TopicoService {
     public TopicoDto findById(Long id) {
         Topico topico = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Curso não encontrado"));
-
         return new TopicoDto(topico);
     }
+
+    @Transactional(readOnly = true)
+    public Topico findTopicoById(Long id) {
+        Topico topico = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Curso não encontrado"));
+        return topico;
+    }
+
 
     @Transactional
     public TopicoDto update(TopicoDto dto, Long id) {
